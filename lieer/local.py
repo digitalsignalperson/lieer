@@ -516,18 +516,18 @@ class Local:
       return
 
     fname = os.path.join (self.md, fname)
+    fname_new = os.path.join (self.wd, 'deleted', ffname)
     try:
         nmsg = db.get(fname)
     except LookupError:
         nmsg = None
 
-    self.print_changes ("deleting %s: %s." % (gid, fname))
-    
+    self.print_changes ("deleting %s: %s" % (gid, fname))
     if not self.dry_run:
       if nmsg is not None:
-        db.remove(fname)
-      os.unlink (fname)
-
+        nmsg.tags.add ('deleted')
+      Path(fname_new).parent.mkdir(parents=True, exist_ok=True)  # still need to call `notmuch new` after for notmuch to detect the file rename and so `gmi push` doesn't complain
+      os.rename(fname, fname_new)
       self.files.remove (ffname)
       self.gids.pop (gid)
 
