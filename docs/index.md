@@ -22,7 +22,7 @@ While Lieer has been used to successfully synchronize millions of messages and t
 * Python 3
 * `notmuch >= 0.25` python bindings
 * `google_api_python_client` (sometimes `google-api-python-client`)
-* `oauth2client`
+* `google_auth_oauthlib`
 * `tqdm` (optional - for progress bar)
 
 ## Installation
@@ -129,6 +129,11 @@ following combinations are OK:
 
 This avoids silently not sending mail to some recipients (pretending we did),
 or sending mail to recipients we didn't want to send to again.
+
+One of the implication of `-t` is you have to keep `Bcc:` header in your
+message when passing it to `sendmail`. It is not enough to just put the
+additional recipient on the command line. For `mutt`, this means setting
+`write_bcc` option.
 
 Lieer will try to associate the sent message with the existing thread if it has
 an `In-Reply-To` header. According to the [Gmail
@@ -261,3 +266,7 @@ the time being, `trash` will be preferred over `spam`, and `spam` over `inbox`.
 
 * Make sure that you use the same domain for you GMail account as you initially created your account with: usually `@gmail.com`, but sometimes `@googlemail.com`. Otherwise you might get a [`Delegation denied` error](https://github.com/gauteh/lieer/issues/88).
 
+
+# Development
+
+Github actions are configured to check for python code formatted by [black](https://black.readthedocs.io/en/stable/integrations/github_actions.html).
